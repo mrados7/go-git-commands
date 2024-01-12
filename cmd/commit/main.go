@@ -247,5 +247,9 @@ func getStagedFiles() []string {
 		return []string{}
 	}
 
+	if len(out) == 0 {
+		return []string{}
+	}
+
 	return strings.Split(string(out), "\n")
 }
