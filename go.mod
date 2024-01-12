@@ -1,4 +1,4 @@
-module github.com/charmbracelet/bubbletea-app-template
+module github.com/mrados7/go-git-commands
 
 go 1.21.5
 
