@@ -45,17 +45,17 @@ changelog:
     - title: Other work
       order: 999
 
-#brews:
-#  - name: ctm
-#    description: JSON Log Viewer tool.
-#    license: MIT
-#    homepage: https://github.com/hedhyw/homebrews
-#    tap:
-#      owner: mrados7
-#      name: homebrew-main
-#    test: system "#{bin}/jlv", "-help"
-#    install: |-
-#      bin.install "jlv"
+brews:
+  - name: checkout
+    description: JSON Log Viewer tool.
+    license: MIT
+    homepage: https://github.com/mrados7/homebrews
+    tap:
+      owner: mrados7
+      name: homebrew-main
+    test: system "#{bin}/checkout", "-help"
+    install: |-
+      bin.install "checkout"
 
 release:
   footer: |
