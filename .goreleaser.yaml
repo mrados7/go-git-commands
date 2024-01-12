@@ -12,12 +12,14 @@ builds:
     mod_timestamp: "{{ .CommitTimestamp }}"
     flags: ["-trimpath"]
     targets: ["go_first_class"]
+    id: 'commit'
     binary: commit
     main: ./cmd/commit
   - env: ["CGO_ENABLED=0"]
     mod_timestamp: "{{ .CommitTimestamp }}"
     flags: ["-trimpath"]
     targets: ["go_first_class"]
+    id: 'checkout'
     binary: checkout
     main: ./cmd/checkout
 
