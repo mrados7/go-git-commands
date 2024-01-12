@@ -14,6 +14,12 @@ builds:
     targets: ["go_first_class"]
     binary: commit
     main: ./cmd/commit
+  - env: ["CGO_ENABLED=0"]
+    mod_timestamp: "{{ .CommitTimestamp }}"
+    flags: ["-trimpath"]
+    targets: ["go_first_class"]
+    binary: checkout
+    main: ./cmd/checkout
 
 changelog:
   sort: asc
