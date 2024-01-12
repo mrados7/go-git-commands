@@ -13,16 +13,13 @@ import (
 )
 
 var (
-	focusedStyle = lipgloss.NewStyle().Foreground(lipgloss.Color("#6FD0FB")).Bold(true)
-	blurredStyle = lipgloss.NewStyle().Foreground(lipgloss.Color("240"))
-	cursorStyle  = focusedStyle.Copy()
-	noStyle      = lipgloss.NewStyle()
-
-	stagedFilesStyle    = lipgloss.NewStyle().Foreground(lipgloss.Color("#10ffcb"))
-	cursorModeHelpStyle = lipgloss.NewStyle().Foreground(lipgloss.Color("244"))
-
-	focusedButton = focusedStyle.Copy().Render("[ Commit ]")
-	blurredButton = fmt.Sprintf("[ %s ]", blurredStyle.Render("Commit"))
+	focusedStyle     = lipgloss.NewStyle().Foreground(lipgloss.Color("#6FD0FB")).Bold(true)
+	blurredStyle     = lipgloss.NewStyle().Foreground(lipgloss.Color("240"))
+	cursorStyle      = focusedStyle.Copy()
+	noStyle          = lipgloss.NewStyle()
+	stagedFilesStyle = lipgloss.NewStyle().Foreground(lipgloss.Color("#10ffcb"))
+	focusedButton    = focusedStyle.Copy().Render("[ Commit ]")
+	blurredButton    = fmt.Sprintf("[ %s ]", blurredStyle.Render("Commit"))
 )
 
 type (
@@ -51,6 +48,10 @@ func initialModel() model {
 	}
 
 	stagedFiles := getStagedFiles()
+
+	if len(stagedFiles) == 0 {
+		log.Fatal("No staged files found")
+	}
 
 	result := strings.Split(branch, "/")
 
