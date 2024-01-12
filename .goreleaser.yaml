@@ -12,7 +12,8 @@ builds:
     mod_timestamp: "{{ .CommitTimestamp }}"
     flags: ["-trimpath"]
     targets: ["go_first_class"]
-    binary: g_c
+    binary: commit
+    main: ./cmd/commit
 
 changelog:
   sort: asc
@@ -35,6 +36,18 @@ changelog:
       order: 10
     - title: Other work
       order: 999
+
+#brews:
+#  - name: ctm
+#    description: JSON Log Viewer tool.
+#    license: MIT
+#    homepage: https://github.com/hedhyw/homebrews
+#    tap:
+#      owner: mrados7
+#      name: homebrew-main
+#    test: system "#{bin}/jlv", "-help"
+#    install: |-
+#      bin.install "jlv"
 
 release:
   footer: |
