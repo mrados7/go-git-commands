@@ -1,4 +1,4 @@
-module github.com/mrados7/go-git-commands
+module github.com/mrados7/go-git-commands/g_c
 
 go 1.21.5
 
