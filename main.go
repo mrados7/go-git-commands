@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"github.com/charmbracelet/lipgloss"
 	"log"
 	"os"
 	"os/exec"
@@ -16,9 +17,13 @@ type (
 )
 
 type model struct {
-	textInput textinput.Model
-	branch    string
-	err       error
+	inputLabel         string
+	commitMessageInput textinput.Model
+	flagsInput         textinput.Model
+	branch             string
+	err                error
+	askingForFlags     bool
+	stagedFiles        []string
 }
 
 func main() {
@@ -33,6 +38,11 @@ func initialModel() model {
 	if err != nil {
 		log.Fatal(err)
 	}
+	stagedFiles, errStaged := getStagedFiles()
+
+	if errStaged != nil {
+		log.Fatal(errStaged)
+	}
 
 	result := strings.Split(branch, "/")
 
@@ -46,29 +56,17 @@ func initialModel() model {
 	ticketId := strings.ToUpper(result[1])
 
 	ti := textinput.New()
-	//ti.Width = 90
-	//ti.ShowSuggestions = true
 	ti.SetValue(fmt.Sprintf("[%s] [%s] ", branchType, ticketId))
-	//ti.SetSuggestions([]string{fmt.Sprintf("[FIX] [%s] ", ticketId), fmt.Sprintf("[IMPR] [%s] ", ticketId)})
 	ti.Focus()
 	ti.CharLimit = 156
-	//ti.Width = 20
 
 	return model{
-		textInput: ti,
-		branch:    branch,
-		err:       nil,
+		inputLabel:         "Enter commit message:",
+		commitMessageInput: ti,
+		branch:             branch,
+		err:                nil,
+		stagedFiles:        stagedFiles,
 	}
-}
-
-func getCurrentGitBranch() (string, error) {
-	cmd := exec.Command("git", "branch", "--show-current")
-	output, err := cmd.CombinedOutput()
-	if err != nil {
-		return "", fmt.Errorf("error getting branch name: %v", err)
-	}
-
-	return strings.TrimSpace(string(output)), nil
 }
 
 func (m model) Init() tea.Cmd {
@@ -82,31 +80,97 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	case tea.KeyMsg:
 		switch msg.Type {
 		case tea.KeyEnter:
-			// Execute git commit command
-			commitCmd := exec.Command("git", "commit", "-m", m.textInput.Value())
-			commitCmd.Stdout = os.Stdout
-			commitCmd.Stderr = os.Stderr
+			if m.askingForFlags {
+				// Execute git commit command with flags
+				commitCmd := exec.Command("git", "commit", m.flagsInput.Value(), "-m", m.commitMessageInput.Value())
+				commitCmd.Stdout = os.Stdout
+				commitCmd.Stderr = os.Stderr
 
-			err := commitCmd.Run()
-			if err != nil {
+				err := commitCmd.Run()
+				if err != nil {
+					return m, tea.Quit
+				}
+
 				return m, tea.Quit
+			} else {
+				m.inputLabel = "Commit flags"
+				// Ask for commit flags
+				flagsInput := textinput.New()
+				commitFlags := []string{
+					"--message",
+					"--all",
+					"--patch",
+					"--reuse-message",
+					"--amend",
+					"--signoff",
+					"--no-verify",
+					"--allow-empty",
+					"--no-edit",
+				}
+				flagsInput.SetSuggestions(commitFlags)
+				flagsInput.ShowSuggestions = true
+				flagsInput.Focus()
+				m.flagsInput = flagsInput
+				m.askingForFlags = true
+				return m, nil
 			}
-
-			return m, tea.Quit
 		case tea.KeyCtrlC, tea.KeyEsc:
 			return m, tea.Quit
 		}
 	}
 
-	m.textInput, cmd = m.textInput.Update(msg)
+	if m.askingForFlags {
+		m.flagsInput, cmd = m.flagsInput.Update(msg)
+	} else {
+		m.commitMessageInput, cmd = m.commitMessageInput.Update(msg)
+	}
+
 	return m, cmd
 }
 
 func (m model) View() string {
+	var inputView string
+	if m.askingForFlags {
+		inputView = m.flagsInput.View()
+	} else {
+		inputView = m.commitMessageInput.View()
+	}
+
+	currentCommitMessage := "Current commit message: " + m.commitMessageInput.Value() + " " + m.flagsInput.Value()
+
+	stagedFiles := strings.Join(m.stagedFiles, "\n")
+
+	currentBranch := lipgloss.NewStyle().Foreground(lipgloss.Color("#fbd87f")).SetString(fmt.Sprintf("Current branch: %s", m.branch))
+	inputLabel := lipgloss.NewStyle().Foreground(lipgloss.Color("#b5f8fe")).SetString(m.inputLabel).Bold(true)
+	inputStyle := lipgloss.NewStyle().SetString(inputView)
+
 	return fmt.Sprintf(
-		"Current branch: %s\n\nEnter commit message\n\n%s\n\n%s",
-		m.branch,
-		m.textInput.View(),
-		"(esc to quit, enter to commit)",
+		"%s\n\n%s\n\n%s\n%s\n\n%s",
+		currentBranch.Render(),
+		currentCommitMessage,
+		inputLabel.Render(),
+		inputStyle.Render(),
+		stagedFiles,
 	) + "\n"
+}
+
+// cmds
+func getCurrentGitBranch() (string, error) {
+	cmd := exec.Command("git", "branch", "--show-current")
+	output, err := cmd.CombinedOutput()
+	if err != nil {
+		return "", fmt.Errorf("error getting branch name: %v", err)
+	}
+
+	return strings.TrimSpace(string(output)), nil
+}
+
+func getStagedFiles() ([]string, error) {
+	cmd := exec.Command("git", "diff", "--cached", "--name-only")
+	output, err := cmd.CombinedOutput()
+	if err != nil {
+		return nil, fmt.Errorf("error getting staged files: %v", err)
+	}
+
+	return strings.Split(strings.TrimSpace(string(output)), "\n"), nil
 }
