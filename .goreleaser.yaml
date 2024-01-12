@@ -12,6 +12,7 @@ builds:
     mod_timestamp: "{{ .CommitTimestamp }}"
     flags: ["-trimpath"]
     targets: ["go_first_class"]
+    binary: g_c
 
 changelog:
   sort: asc
