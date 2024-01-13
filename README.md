@@ -1,9 +1,9 @@
 # go-git-commands
 
 ## checkout
+
 Creates a new branch from the current branch using naming strategy `<type>/<ticket-id>/<branch-name>`.
 Supported types are `FEAT`, `FIX`, `IMPR`, `OPS`.
-
 
 ### Install
 
@@ -32,9 +32,44 @@ brew install mrados7/main/commit
 go install github.com/mrados7/go-git-commands/commit@latest
 ```
 
-
 ### Usage
 
 ```bash
 commit
+```
+
+## Config file
+
+You can add a config file to project directory `.git-commands.json` to override the default values.
+
+```json
+{
+  "branchTypes": [
+    {
+      "type": "FEAT",
+      "description": "A new feature"
+    },
+    {
+      "type": "FIX",
+      "description": "A bug fix"
+    },
+    {
+      "type": "DOCS",
+      "description": "Documentation only changes"
+    },
+    ...
+  ],
+  "boards": [
+    {
+      "name": "PLF",
+      "description": "Platform Team Board"
+    },
+    {
+      "name": "SD",
+      "description": "Support Desk Board"
+    }
+    ...
+  ]
+}
+
 ```

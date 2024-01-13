@@ -15,9 +15,9 @@ const (
 	listHeight   = 35
 )
 
-func (b jiraBoard) Title() string       { return b.Name }
-func (b jiraBoard) Description() string { return b.D }
-func (b jiraBoard) FilterValue() string { return b.Name }
+func (b board) Title() string       { return b.Name }
+func (b board) Description() string { return b.D }
+func (b board) FilterValue() string { return b.Name }
 
 func (p branchType) Title() string       { return p.T }
 func (p branchType) Description() string { return p.D }
@@ -199,8 +199,8 @@ func (m model) UpdateJiraBoardList(msg tea.Msg) (tea.Model, tea.Cmd) {
 		case tea.KeyCtrlC, tea.KeyEsc:
 			return m, tea.Quit
 		case tea.KeyEnter, tea.KeySpace:
-			m.selectedJiraBoard = m.jiraBoardList.SelectedItem().(jiraBoard).Title()
-			m.ticketIdInput.SetValue(m.jiraBoardList.SelectedItem().(jiraBoard).Title() + "-")
+			m.selectedJiraBoard = m.jiraBoardList.SelectedItem().(board).Title()
+			m.ticketIdInput.SetValue(m.jiraBoardList.SelectedItem().(board).Title() + "-")
 			m.shouldEnterTicketId = true
 		}
 	}

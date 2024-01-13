@@ -13,14 +13,14 @@ type branchType struct {
 	D string `json:"description"`
 }
 
-type jiraBoard struct {
+type board struct {
 	Name string `json:"name"`
 	D    string `json:"description"`
 }
 
 type config struct {
 	BranchTypes []branchType `json:"branchTypes"`
-	JiraBoards  []jiraBoard  `json:"jiraBoards"`
+	boards      []board      `json:"boards"`
 }
 
 const configFile = ".git-commands.json"
@@ -34,8 +34,8 @@ var defaultBranchTypes = []list.Item{
 }
 
 var defaultJiraBoards = []list.Item{
-	jiraBoard{"EPD", "CPO team board"},
-	jiraBoard{"IB", "Interim billing board"},
+	board{"EPD", "CPO team board"},
+	board{"IB", "Interim billing board"},
 }
 
 func convertBranchTypes(branchTypes []branchType) []list.Item {
@@ -49,7 +49,7 @@ func convertBranchTypes(branchTypes []branchType) []list.Item {
 	return items
 }
 
-func convertBoards(boards []jiraBoard) []list.Item {
+func convertBoards(boards []board) []list.Item {
 	items := []list.Item{}
 	for _, board := range boards {
 		items = append(items, board)
@@ -69,7 +69,7 @@ func loadConfigFile(path string) ([]list.Item, []list.Item, error) {
 	if err := json.Unmarshal(data, &c); err != nil {
 		return nil, nil, fmt.Errorf("error parsing config file: %w", err)
 	}
-	return convertBranchTypes(c.BranchTypes), convertBoards(c.JiraBoards), nil
+	return convertBranchTypes(c.BranchTypes), convertBoards(c.boards), nil
 }
 
 func loadConfig() ([]list.Item, []list.Item, error) {
