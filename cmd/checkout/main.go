@@ -6,6 +6,7 @@ import (
 	"github.com/charmbracelet/bubbles/textinput"
 	tea "github.com/charmbracelet/bubbletea"
 	"github.com/charmbracelet/lipgloss"
+	"github.com/mrados7/go-git-commands/cmd/git"
 	"os"
 )
 
@@ -120,7 +121,7 @@ func (m model) UpdateBranchNameInput(msg tea.Msg) (tea.Model, tea.Cmd) {
 		case tea.KeyCtrlC, tea.KeyEsc:
 			return m, tea.Quit
 		case tea.KeyEnter:
-			err := checkoutNewBranch(getBranchName(m))
+			err := git.CheckoutNewBranch(getBranchName(m))
 			if err != nil {
 				fmt.Println(err)
 				os.Exit(1)
@@ -235,7 +236,7 @@ func getBranchName(m model) string {
 }
 
 func main() {
-	isGitRepo := checkIfGitRepo()
+	isGitRepo := git.CheckIfGitRepo()
 	if !isGitRepo {
 		fail("Error: not a git repository")
 	}

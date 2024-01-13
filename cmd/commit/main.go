@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"github.com/charmbracelet/lipgloss"
+	"github.com/mrados7/go-git-commands/cmd/git"
 	"log"
 	"os"
 	"os/exec"
@@ -35,6 +36,10 @@ type model struct {
 }
 
 func main() {
+	isGitRepo := git.CheckIfGitRepo()
+	if !isGitRepo {
+		log.Fatal("Not a git repository")
+	}
 	p := tea.NewProgram(initialModel())
 	if _, err := p.Run(); err != nil {
 		log.Fatal(err)
@@ -42,12 +47,12 @@ func main() {
 }
 
 func initialModel() model {
-	branch, err := getCurrentGitBranch()
+	branch, err := git.GetCurrentGitBranch()
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	stagedFiles := getStagedFiles()
+	stagedFiles := git.GetStagedFiles()
 
 	if len(stagedFiles) == 0 {
 		log.Fatal("No staged files found")
@@ -105,16 +110,6 @@ func initialModel() model {
 	}
 
 	return m
-}
-
-func getCurrentGitBranch() (string, error) {
-	cmd := exec.Command("git", "branch", "--show-current")
-	output, err := cmd.CombinedOutput()
-	if err != nil {
-		return "", fmt.Errorf("error getting branch name: %v", err)
-	}
-
-	return strings.TrimSpace(string(output)), nil
 }
 
 func (m model) Init() tea.Cmd {
@@ -238,18 +233,4 @@ func (m model) View() string {
 	b.WriteRune('\n')
 
 	return b.String()
-}
-
-func getStagedFiles() []string {
-	cmd := exec.Command("git", "diff", "--name-only", "--cached")
-	out, err := cmd.Output()
-	if err != nil {
-		return []string{}
-	}
-
-	if len(out) == 0 {
-		return []string{}
-	}
-
-	return strings.Split(string(out), "\n")
 }
