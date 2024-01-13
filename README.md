@@ -1,5 +1,24 @@
 # go-git-commands
 
+## checkout
+Creates a new branch from the current branch using naming strategy `<type>/<ticket-id>/<branch-name>`.
+Supported types are `FEAT`, `FIX`, `IMPR`, `OPS`.
+
+
+### Install
+
+```bash
+brew install mrados7/main/checkout
+# or	
+go install github.com/mrados7/go-git-commands/checkout@latest
+```
+
+### Usage
+
+```bash
+checkout
+```
+
 ## commit
 
 Uses branch name to detrmine the commit message.
@@ -18,23 +37,4 @@ go install github.com/mrados7/go-git-commands/commit@latest
 
 ```bash
 commit
-```
-
-## checkout
-Creates a new branch from the current branch using naming strategy `<type>/<ticket-id>/<branch-name>`.
-Supported types are `FEAT`, `FIX`, `IMPR`, `OPS`.
-
-
-### Install
-
-```bash
-brew install mrados7/main/checkout
-# or	
-go install github.com/mrados7/go-git-commands/checkout@latest
-```
-
-### Usage
-
-```bash
-checkout
 ```
