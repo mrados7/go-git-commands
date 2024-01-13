@@ -2,12 +2,13 @@ package main
 
 import (
 	"fmt"
-	"github.com/charmbracelet/lipgloss"
-	"github.com/mrados7/go-git-commands/cmd/git"
 	"log"
 	"os"
 	"os/exec"
 	"strings"
+
+	"github.com/charmbracelet/lipgloss"
+	"github.com/mrados7/go-git-commands/cmd/git"
 
 	"github.com/charmbracelet/bubbles/textinput"
 	tea "github.com/charmbracelet/bubbletea"

@@ -3,9 +3,10 @@ package main
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/charmbracelet/bubbles/list"
 	"os"
 	"path/filepath"
+
+	"github.com/charmbracelet/bubbles/list"
 )
 
 type branchType struct {

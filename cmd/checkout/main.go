@@ -2,12 +2,13 @@ package main
 
 import (
 	"fmt"
+	"os"
+
 	"github.com/charmbracelet/bubbles/list"
 	"github.com/charmbracelet/bubbles/textinput"
 	tea "github.com/charmbracelet/bubbletea"
 	"github.com/charmbracelet/lipgloss"
 	"github.com/mrados7/go-git-commands/cmd/git"
-	"os"
 )
 
 const (
@@ -59,17 +60,13 @@ func initialModel(branchTypes []list.Item, jiraBoards []list.Item) model {
 	m.jiraBoardList.SetShowStatusBar(false)
 
 	// ---- ticketIdInput input -----
-	var ticketIdInput textinput.Model
-
-	ticketIdInput = textinput.New()
+	ticketIdInput := textinput.New()
 	ticketIdInput.Focus()
 
 	m.ticketIdInput = ticketIdInput
 
 	// ---- branchName input -----
-	var branchNameInput textinput.Model
-
-	branchNameInput = textinput.New()
+	branchNameInput := textinput.New()
 	branchNameInput.Placeholder = "short-message"
 
 	m.branchNameInput = branchNameInput
