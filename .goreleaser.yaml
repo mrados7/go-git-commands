@@ -47,15 +47,37 @@ changelog:
 
 brews:
   - name: checkout
+    ids:
+    - checkout
     description: Checkout is a tool for checking out new git branch with naming convention
     license: MIT
     homepage: https://github.com/mrados7/homebrews
+    dependencies:
+      - git
     repository:
       owner: mrados7
-      name: homebrew-main
+      name: homebrews
+      branch: main
     test: system "#{bin}/checkout", "-help"
     install: |-
       bin.install "checkout"
+
+  - name: commit
+    ids:
+    - commit
+    description: Commit is a tool for commiting changes with naming convention
+    license: MIT
+    homepage: https://github.com/mrados7/homebrews
+    dependencies:
+      - git
+    repository:
+      owner: mrados7
+      name: homebrews
+      branch: main
+    test: system "#{bin}/commit", "-help"
+    install: |-
+      bin.install "commit"
+      
 
 release:
   footer: |
