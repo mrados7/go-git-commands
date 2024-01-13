@@ -47,10 +47,10 @@ changelog:
 
 brews:
   - name: checkout
-    description: JSON Log Viewer tool.
+    description: Checkout is a tool for checking out new git branch with naming convention
     license: MIT
     homepage: https://github.com/mrados7/homebrews
-    tap:
+    repository:
       owner: mrados7
       name: homebrew-main
     test: system "#{bin}/checkout", "-help"
