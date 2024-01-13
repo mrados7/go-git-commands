@@ -134,7 +134,7 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 			// If so, exit.
 			if s == "enter" && m.focusInputIndex == len(m.inputs) {
 				// Execute git commit command with flags
-				commitCmd := exec.Command("git", "commit", m.inputs[0].Value(), "-m", m.inputs[1].Value())
+				commitCmd := exec.Command("git", "commit", "-m", m.inputs[0].Value(), m.inputs[1].Value())
 				commitCmd.Stdout = os.Stdout
 				commitCmd.Stderr = os.Stderr
 
