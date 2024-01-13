@@ -23,6 +23,14 @@ builds:
     binary: checkout
     main: ./cmd/checkout
 
+archives:
+  - id: commit
+    builds:
+      - commit
+  - id: checkout
+    builds:
+      - checkout
+
 changelog:
   sort: asc
   use: github
