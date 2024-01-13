@@ -1,0 +1,26 @@
+{
+  "boards": [
+    {
+      "name": "EPD",
+      "description": "Company Solution Team Board"
+    },
+    {
+      "name": "IB",
+      "description": "Interim Billing Board"
+    }
+  ],
+  "branchTypes": [
+    {
+      "type": "FEAT",
+      "description": "A new feature"
+    },
+    {
+      "type": "FIX",
+      "description": "A bug fix"
+    },
+    {
+      "type": "DOCS",
+      "description": "Documentation onlyf changes"
+    }
+  ]
+}

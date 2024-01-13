@@ -18,10 +18,7 @@ func CheckIfGitRepo() bool {
 	cmd := exec.Command("git", "rev-parse", "--is-inside-work-tree")
 	cmd.Stderr = os.Stderr
 	err := cmd.Run()
-	if err != nil {
-		return false
-	}
-	return true
+	return err == nil
 }
 
 func GetStagedFiles() []string {

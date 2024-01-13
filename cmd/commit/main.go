@@ -23,10 +23,6 @@ var (
 	blurredButton    = fmt.Sprintf("[ %s ]", blurredStyle.Render("Commit"))
 )
 
-type (
-	errMsg error
-)
-
 type model struct {
 	focusInputIndex int
 	inputs          []textinput.Model

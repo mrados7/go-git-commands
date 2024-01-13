@@ -24,8 +24,6 @@ func (p branchType) Description() string { return p.D }
 func (p branchType) FilterValue() string { return p.T }
 
 var (
-	focusedStyle = lipgloss.NewStyle().Foreground(lipgloss.Color("#6FD0FB"))
-
 	stepTitleStyle    = lipgloss.NewStyle().Background(lipgloss.Color("#DA8BFF")).Foreground(lipgloss.Color("#000000")).Padding(0, 1)
 	listTitleBarStyle = lipgloss.NewStyle().Foreground(lipgloss.Color("#000000")).Padding(1, 0)
 	docStyle          = lipgloss.NewStyle().Margin(1, 2)
@@ -34,15 +32,10 @@ var (
 )
 
 type model struct {
-	branchType            string
-	ticketIdInput         textinput.Model
-	branchNameInput       textinput.Model
-	step                  int
-	placeholderBranchName string
-	// new model
-	branchTypeList list.Model
-	jiraBoardList  list.Model
-
+	ticketIdInput       textinput.Model
+	branchNameInput     textinput.Model
+	branchTypeList      list.Model
+	jiraBoardList       list.Model
 	selectedBranchType  string
 	selectedJiraBoard   string
 	shouldEnterTicketId bool
