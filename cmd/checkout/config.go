@@ -20,7 +20,7 @@ type board struct {
 
 type config struct {
 	BranchTypes []branchType `json:"branchTypes"`
-	boards      []board      `json:"boards"`
+	Boards      []board      `json:"boards"`
 }
 
 const configFile = ".git-commands.json"
@@ -69,7 +69,7 @@ func loadConfigFile(path string) ([]list.Item, []list.Item, error) {
 	if err := json.Unmarshal(data, &c); err != nil {
 		return nil, nil, fmt.Errorf("error parsing config file: %w", err)
 	}
-	return convertBranchTypes(c.BranchTypes), convertBoards(c.boards), nil
+	return convertBranchTypes(c.BranchTypes), convertBoards(c.Boards), nil
 }
 
 func loadConfig() ([]list.Item, []list.Item, error) {
