@@ -23,13 +23,13 @@ builds:
     binary: checkout
     main: ./cmd/checkout
 
-archives:
-  - id: commit
-    builds:
-      - commit
-  - id: checkout
-    builds:
-      - checkout
+#archives:
+#  - id: commit
+#    builds:
+#      - commit
+#  - id: checkout
+#    builds:
+#      - checkout
 
 changelog:
   sort: asc
@@ -55,8 +55,6 @@ changelog:
 
 brews:
   - name: checkout
-    ids:
-    - checkout
     description: Checkout is a tool for checking out new git branch with naming convention
     license: MIT
     homepage: https://github.com/mrados7/homebrews
@@ -71,8 +69,6 @@ brews:
       bin.install "checkout"
 
   - name: commit
-    ids:
-    - commit
     description: Commit is a tool for commiting changes with naming convention
     license: MIT
     homepage: https://github.com/mrados7/homebrews
