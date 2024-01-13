@@ -23,7 +23,7 @@ type config struct {
 	JiraBoards  []jiraBoard  `json:"jiraBoards"`
 }
 
-const configFile = ".git-tools-2.json"
+const configFile = ".git-commands.json"
 
 var defaultBranchTypes = []list.Item{
 	branchType{"FEAT", "A new feature"},
