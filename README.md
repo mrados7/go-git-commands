@@ -1,19 +1,40 @@
-# bubbletea-app-template
+# go-git-commands
 
-A template repository to create [Bubbletea][bubbletea] apps.
+## commit
 
-## Included
+Uses branch name to detrmine the commit message.
+If the branch name is `FIX/FE-1234/branch-name` then the commit message will be `[FIX] [FE-1234] commit-message`.
 
-- a sample app that does nothing, so it includes all dependencies:
-	- [bubbletea][]
-	- [bubbles][]
-	- [lipgloss][]
-- github actions workflows for build, test, lint and release
-- [GoReleaser][goreleaser] configs
-- [golangci-lint][lint] configs
+### Install
 
-[bubbletea]: https://github.com/charmbracelet/bubbletea
-[bubbles]: https://github.com/charmbracelet/bubbles
-[lipgloss]: https://github.com/charmbracelet/lipgloss
-[goreleaser]: https://goreleaser.com
-[lint]: https://golangci-lint.run
+```bash
+brew install mrados7/main/commit
+# or	
+go install github.com/mrados7/go-git-commands/commit@latest
+```
+
+
+### Usage
+
+```bash
+commit
+```
+
+## checkout
+Creates a new branch from the current branch using naming strategy `<type>/<ticket-id>/<branch-name>`.
+Supported types are `FEAT`, `FIX`, `IMPR`, `OPS`.
+
+
+### Install
+
+```bash
+brew install mrados7/main/checkout
+# or	
+go install github.com/mrados7/go-git-commands/checkout@latest
+```
+
+### Usage
+
+```bash
+checkout
+```
