@@ -29,7 +29,8 @@ var (
 	listTitleBarStyle = lipgloss.NewStyle().Foreground(lipgloss.Color("#000000")).Padding(1, 0)
 	docStyle          = lipgloss.NewStyle().Margin(1, 2)
 
-	inputStyle = lipgloss.NewStyle().Margin(1, 0)
+	inputStyle   = lipgloss.NewStyle().Margin(1, 0)
+	successStyle = lipgloss.NewStyle().Bold(true).Foreground(lipgloss.Color("#95E745"))
 )
 
 type model struct {
@@ -235,11 +236,13 @@ func main() {
 		fail("Error: %s", err)
 	}
 
-	p := tea.NewProgram(initialModel(branchTypes, jiraBoards), tea.WithAltScreen())
+	p := tea.NewProgram(initialModel(branchTypes, jiraBoards))
 	if _, err := p.Run(); err != nil {
 		fmt.Println(err)
 		os.Exit(1)
 	}
+	currentBranch, _ := git.GetCurrentGitBranch()
+	fmt.Println(successStyle.Render("Now on branch " + currentBranch))
 }
 
 func fail(format string, args ...interface{}) {
