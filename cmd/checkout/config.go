@@ -35,8 +35,8 @@ var defaultBranchTypes = []list.Item{
 }
 
 var defaultJiraBoards = []list.Item{
-	board{"EPD", "CPO team board"},
-	board{"IB", "Interim billing board"},
+	board{"PTB", "Platform Team Board"},
+	board{"SDB", "Support Desk Board"},
 }
 
 func convertBranchTypes(branchTypes []branchType) []list.Item {

@@ -61,11 +61,11 @@ You can add a config file to project directory `.git-commands.json` to override 
   ],
   "boards": [
     {
-      "name": "PLF",
+      "name": "PTB",
       "description": "Platform Team Board"
     },
     {
-      "name": "SD",
+      "name": "SDB",
       "description": "Support Desk Board"
     }
     ...
