@@ -15,7 +15,7 @@ import (
 )
 
 var (
-	focusedStyle     = lipgloss.NewStyle().Foreground(lipgloss.Color("#6FD0FB")).Bold(true)
+	focusedStyle     = lipgloss.NewStyle().Foreground(lipgloss.Color("#DA8BFF")).Bold(true)
 	blurredStyle     = lipgloss.NewStyle().Foreground(lipgloss.Color("240"))
 	cursorStyle      = focusedStyle.Copy()
 	noStyle          = lipgloss.NewStyle()
@@ -37,7 +37,7 @@ func main() {
 	if !isGitRepo {
 		log.Fatal("Not a git repository")
 	}
-	p := tea.NewProgram(initialModel())
+	p := tea.NewProgram(initialModel(), tea.WithAltScreen())
 	if _, err := p.Run(); err != nil {
 		log.Fatal(err)
 	}
@@ -56,12 +56,6 @@ func initialModel() model {
 	}
 
 	result := strings.Split(branch, "/")
-
-	// get first and second result into separate variables
-	// check if result has more than 2 items
-	//if len(result) <= 2 {
-	//	log.Fatal("Branch name should be in the format of <type>/<task-id>/short-message")
-	//}
 
 	var branchType string
 	var ticketId string
@@ -87,7 +81,12 @@ func initialModel() model {
 
 		switch i {
 		case 0:
-			t.SetValue(fmt.Sprintf("[%s] [%s] ", branchType, ticketId))
+			if branchType != "" {
+				t.SetValue(fmt.Sprintf("[%s] ", branchType))
+			}
+			if ticketId != "" {
+				t.SetValue(t.Value() + fmt.Sprintf("[%s] ", ticketId))
+			}
 			t.Focus()
 			t.PromptStyle = focusedStyle
 			t.TextStyle = focusedStyle
@@ -193,32 +192,31 @@ func (m *model) updateInputs(msg tea.Msg) tea.Cmd {
 }
 
 func (m model) View() string {
-	var b strings.Builder
+	s := ""
+
+	stagedFilesView := ""
+	stagedFilesView += lipgloss.JoinVertical(lipgloss.Top, "Staged files:")
+	stagedFilesView += "\n"
+	for index, elem := range m.stagedFiles {
+		stagedFilesView += lipgloss.JoinVertical(lipgloss.Top, stagedFilesStyle.Render(fmt.Sprintf("• %s", elem)))
+		if index != len(m.stagedFiles)-1 {
+			stagedFilesView += "\n"
+		}
+	}
 
 	currentBranch := lipgloss.NewStyle().Foreground(lipgloss.Color("#fcbda1")).SetString(fmt.Sprintf("Branch: %s", m.branch))
 
-	b.WriteString(currentBranch.Render())
-	b.WriteRune('\n')
-	b.WriteRune('\n')
+	s += lipgloss.JoinVertical(lipgloss.Top, currentBranch.Render())
+	s += "\n\n"
 
-	currentCommitCommand := lipgloss.NewStyle().Foreground(lipgloss.Color("#a1e0fc")).SetString(fmt.Sprintf("git commit -m \"%s\" %s", m.inputs[0].Value(), m.inputs[1].Value()))
-
-	b.WriteString(currentCommitCommand.Render())
-	b.WriteRune('\n')
-	b.WriteRune('\n')
-
-	inputLabels := []string{"Commit message ", "Commit flags "}
+	inputLabels := []string{"Commit message:", "Commit flags (optional):"}
 
 	for i := range m.inputs {
-		if i == m.focusInputIndex {
-			b.WriteString(lipgloss.NewStyle().Foreground(lipgloss.Color("#6FD0FB")).Bold(true).SetString(inputLabels[i]).Render())
-		} else {
-			b.WriteString(inputLabels[i])
-		}
-		b.WriteString(m.inputs[i].View())
-		b.WriteRune('\n')
+		s += lipgloss.JoinVertical(1, inputLabels[i])
+		s += "\n"
+		s += lipgloss.JoinVertical(0.5, m.inputs[i].View())
 		if i < len(m.inputs)-1 {
-			b.WriteRune('\n')
+			s += "\n"
 		}
 	}
 
@@ -226,13 +224,12 @@ func (m model) View() string {
 	if m.focusInputIndex == len(m.inputs) {
 		button = &focusedButton
 	}
-	fmt.Fprintf(&b, "\n\n%s\n\n", *button)
+	s += "\n\n"
+	s += lipgloss.JoinVertical(1, *button)
 
-	b.WriteString("Staged changes: ")
-	b.WriteRune('\n')
-	b.WriteString(stagedFilesStyle.Render(strings.Join(m.stagedFiles, "\n")))
+	stagedFilesStyle := lipgloss.NewStyle().MarginLeft(8).Border(lipgloss.NormalBorder()).Padding(0, 1)
 
-	b.WriteRune('\n')
+	f := lipgloss.JoinHorizontal(lipgloss.Left, s, stagedFilesStyle.Render(stagedFilesView))
 
-	return b.String()
+	return f
 }

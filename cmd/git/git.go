@@ -32,7 +32,17 @@ func GetStagedFiles() []string {
 		return []string{}
 	}
 
-	return strings.Split(string(out), "\n")
+	return filterEmpty(strings.Split(string(out), "\n"))
+}
+
+func filterEmpty(s []string) []string {
+	var r []string
+	for _, str := range s {
+		if str != "" {
+			r = append(r, str)
+		}
+	}
+	return r
 }
 
 func GetCurrentGitBranch() (string, error) {
