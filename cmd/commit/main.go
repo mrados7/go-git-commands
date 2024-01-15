@@ -60,9 +60,11 @@ func initialModel() model {
 	var branchType string
 	var ticketId string
 
-	if len(result) >= 2 {
+	if len(result) > 0 {
 		branchType = strings.ToUpper(result[0])
-		ticketId = strings.ToUpper(result[1])
+		if len(result) > 1 {
+			ticketId = strings.ToUpper(result[1])
+		}
 	}
 
 	m := model{
@@ -88,6 +90,7 @@ func initialModel() model {
 				t.SetValue(t.Value() + fmt.Sprintf("[%s] ", ticketId))
 			}
 			t.Focus()
+			t.CursorEnd()
 			t.PromptStyle = focusedStyle
 			t.TextStyle = focusedStyle
 		case 1:
