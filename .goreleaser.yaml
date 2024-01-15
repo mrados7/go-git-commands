@@ -82,10 +82,3 @@ brews:
     install: |-
       bin.install "commit"
       
-
-release:
-  footer: |
-
-    ---
-
-    _Released with [GoReleaser](https://goreleaser.com)!_
