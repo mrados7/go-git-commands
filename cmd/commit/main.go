@@ -59,12 +59,17 @@ func initialModel() model {
 
 	// get first and second result into separate variables
 	// check if result has more than 2 items
-	if len(result) <= 2 {
-		log.Fatal("Branch name should be in the format of <type>/<task-id>/short-message")
-	}
+	//if len(result) <= 2 {
+	//	log.Fatal("Branch name should be in the format of <type>/<task-id>/short-message")
+	//}
 
-	branchType := strings.ToUpper(result[0])
-	ticketId := strings.ToUpper(result[1])
+	var branchType string
+	var ticketId string
+
+	if len(result) >= 2 {
+		branchType = strings.ToUpper(result[0])
+		ticketId = strings.ToUpper(result[1])
+	}
 
 	m := model{
 		inputs:          make([]textinput.Model, 2),
