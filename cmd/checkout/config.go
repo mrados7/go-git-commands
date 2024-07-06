@@ -84,7 +84,13 @@ func loadConfig() ([]list.Item, []list.Item, error) {
 	}
 	for {
 		rel, _ := filepath.Rel(basePath, targetPath)
+		fmt.Println("Rel:", rel)
 		if rel == "." {
+			filePath := filepath.Join(basePath, configFile)
+			if _, err := os.Open(filePath); err == nil {
+				fmt.Println("Found config file at", filePath)
+				return loadConfigFile(filePath)
+			}
 			break
 		}
 		filePath := filepath.Join(targetPath, configFile)
@@ -92,6 +98,8 @@ func loadConfig() ([]list.Item, []list.Item, error) {
 			fmt.Println("Found config file at", filePath)
 			return loadConfigFile(filePath)
 		}
+
+		fmt.Println("No config file found at", filePath)
 
 		targetPath += "/.."
 	}

@@ -41,6 +41,7 @@ commit
 ## Config file
 
 You can add a config file to project directory `.git-commands.json` to override the default values.
+Alternatively, you can add a global config file to your home directory `~/.git-commands.json`.
 
 ```json
 {
