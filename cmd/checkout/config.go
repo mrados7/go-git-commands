@@ -24,7 +24,7 @@ type config struct {
 	Boards      []board      `json:"boards"`
 }
 
-const configFile = ".git-commands.json"
+const configFile = ".checkout-config.json"
 
 var defaultBranchTypes = []list.Item{
 	branchType{"FEAT", "A new feature"},
