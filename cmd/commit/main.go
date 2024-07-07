@@ -37,7 +37,7 @@ func main() {
 	if !isGitRepo {
 		log.Fatal("Not a git repository")
 	}
-	p := tea.NewProgram(initialModel(), tea.WithAltScreen())
+	p := tea.NewProgram(initialModel())
 	if _, err := p.Run(); err != nil {
 		log.Fatal(err)
 	}
